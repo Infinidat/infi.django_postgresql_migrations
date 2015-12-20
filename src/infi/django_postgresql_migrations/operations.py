@@ -4,7 +4,7 @@ from django.db.migrations.operations.base import Operation
 class CreateCompactIndex(Operation):
     '''
     An operation that creates a BTree GIN index. This kind of index is useful
-    when the column contains many repeating values, since it would result in a much
+    when the column contains many repeating values, since it results in a much
     smaller index size relative to a regular BTree index.
     See http://www.postgresql.org/docs/9.4/static/btree-gin.html
     See http://leopard.in.ua/2015/04/13/postgresql-indexes/
