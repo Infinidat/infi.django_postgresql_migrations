@@ -33,7 +33,7 @@ smaller index size relative to a regular BTree index.
 * See http://www.postgresql.org/docs/9.4/static/btree-gin.html
 * See http://leopard.in.ua/2015/04/13/postgresql-indexes/
 
-The constructor expects the model name, the field name, and and optional index name.
+The constructor expects the model name, the field name, and an optional index name.
 ```python
 CreateCompactIndex('SampleModel', 'sample_field')
 ```
@@ -46,7 +46,7 @@ for substring matching and fuzzy searches.
 
 * See http://www.postgresql.org/docs/9.4/static/pgtrgm.html
 
-The constructor expects the model name, the field name, and and optional index name.
+The constructor expects the model name, the field name, and an optional index name.
 ```python
 CreateTrigramIndex('SampleModel', 'sample_field')
 ```
@@ -59,7 +59,7 @@ information about the column's values will be available for the query planner.
 
 * See http://www.postgresql.org/docs/9.4/static/planner-stats.html
 
-The constructor expects the model name, the field name, and and optional statistics target (defaults to 1000).
+The constructor expects the model name, the field name, and an optional statistics target (defaults to 1000).
 ```python
 SetStatistics('SampleModel', 'sample_field', target=5000)
 ```
