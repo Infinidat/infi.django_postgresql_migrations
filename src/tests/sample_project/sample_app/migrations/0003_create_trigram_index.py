@@ -14,5 +14,6 @@ class Migration(migrations.Migration):
 
     operations = [
         CreateTrigramIndex('SampleModel', 'char_field'),
-        CreateTrigramIndex('SampleModel', 'text_field', 'my_trgm_index')
+        CreateTrigramIndex('SampleModel', 'text_field', 'my_trgm_index'),
+        CreateTrigramIndex('SampleModel', 'text_field', 'my_partial_trgm_index', where='text_field IS NOT NULL')
     ]

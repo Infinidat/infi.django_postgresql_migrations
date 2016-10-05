@@ -38,6 +38,11 @@ The constructor expects the model name, the field name, and an optional index na
 CreateCompactIndex('SampleModel', 'sample_field')
 ```
 
+It is possible to create a partial index by supplying a WHERE clause:
+```python
+CreateCompactIndex('SampleModel', 'sample_field', where='sample_field IS NOT NULL')
+```
+
 
 ## CreateTrigramIndex
 
@@ -51,6 +56,11 @@ The constructor expects the model name, the field name, and an optional index na
 CreateTrigramIndex('SampleModel', 'sample_field')
 ```
 
+It is possible to create a partial index by supplying a WHERE clause:
+```python
+CreateTrigramIndex('SampleModel', 'sample_field', where='sample_field IS NOT NULL')
+```
+
 
 ## SetStatistics
 
@@ -61,7 +71,7 @@ information about the column's values will be available for the query planner.
 
 The constructor expects the model name, the field name, and an optional statistics target (defaults to 1000).
 ```python
-SetStatistics('SampleModel', 'sample_field', target=5000)
+SetStatistics('SampleModel', 'sample_field', target=500)
 ```
 
 
