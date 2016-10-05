@@ -10,10 +10,11 @@ class CreateCompactIndex(Operation):
     See http://leopard.in.ua/2015/04/13/postgresql-indexes/
     '''
 
-    def __init__(self, model_name, field_name, index_name=None):
+    def __init__(self, model_name, field_name, index_name=None, where=None):
         self.model_name = model_name
         self.field_name = field_name
         self.index_name = index_name or '%s_%s_btree_gin' % (model_name.lower(), field_name)
+        self.where = where
 
     def state_forwards(self, app_label, state):
         pass
@@ -22,8 +23,9 @@ class CreateCompactIndex(Operation):
         model = to_state.apps.get_model(app_label, self.model_name)
         if self.allow_migrate_model(schema_editor.connection.alias, model):
             schema_editor.execute('CREATE EXTENSION IF NOT EXISTS btree_gin')
-            schema_editor.execute('CREATE INDEX "%s" ON "%s" USING gin ("%s")' %
-                                  (self.index_name, model._meta.db_table, self.field_name))
+            conds = 'WHERE ' + self.where if self.where else ''
+            schema_editor.execute('CREATE INDEX "%s" ON "%s" USING gin ("%s") %s' %
+                                  (self.index_name, model._meta.db_table, self.field_name, conds))
 
     def database_backwards(self, app_label, schema_editor, from_state, to_state):
         model = to_state.apps.get_model(app_label, self.model_name)
@@ -47,10 +49,11 @@ class CreateTrigramIndex(Operation):
     See http://www.postgresql.org/docs/9.4/static/pgtrgm.html
     '''
 
-    def __init__(self, model_name, field_name, index_name=None):
+    def __init__(self, model_name, field_name, index_name=None, where=None):
         self.model_name = model_name
         self.field_name = field_name
         self.index_name = index_name or '%s_%s_trgm' % (model_name.lower(), field_name)
+        self.where = where
 
     def state_forwards(self, app_label, state):
         pass
@@ -59,8 +62,9 @@ class CreateTrigramIndex(Operation):
         model = to_state.apps.get_model(app_label, self.model_name)
         if self.allow_migrate_model(schema_editor.connection.alias, model):
             schema_editor.execute('CREATE EXTENSION IF NOT EXISTS pg_trgm')
-            schema_editor.execute('CREATE INDEX "%s" ON "%s" USING gin ("%s" gin_trgm_ops)' %
-                                  (self.index_name, model._meta.db_table, self.field_name))
+            conds = 'WHERE ' + self.where if self.where else ''
+            schema_editor.execute('CREATE INDEX "%s" ON "%s" USING gin ("%s" gin_trgm_ops) %s' %
+                                  (self.index_name, model._meta.db_table, self.field_name, conds))
 
     def database_backwards(self, app_label, schema_editor, from_state, to_state):
         model = to_state.apps.get_model(app_label, self.model_name)
