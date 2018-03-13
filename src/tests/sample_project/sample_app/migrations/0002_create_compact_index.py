@@ -15,5 +15,6 @@ class Migration(migrations.Migration):
     operations = [
         CreateCompactIndex('SampleModel', 'int_field'),
         CreateCompactIndex('SampleModel', 'char_field', 'my_index'),
-        CreateCompactIndex('SampleModel', 'char_field', 'my_partial_index', where='length(char_field) < 4')
+        CreateCompactIndex('SampleModel', 'char_field', 'my_partial_index', where='length(char_field) < 4'),
+        CreateCompactIndex('SampleModel', ['int_field', 'char_field'], where='length(char_field) < 4')
     ]

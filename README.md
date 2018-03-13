@@ -80,9 +80,16 @@ SetStatistics('SampleModel', 'sample_field', target=500)
 Run the following commands:
 
     easy_install -U infi.projector
-    projector devenv build
+    projector devenv build --use-isolated-python
 
 To run the tests use:
+
+    easy_install -U supportal.fabric_contrib
+
+    OSX:
+        fab -f src/tests/sample_project/fabfile.py -H localhost osx
+    Unbuntu
+        fab -f src/tests/sample_project/fabfile.py -H localhost ubuntu
 
     bin/python src/tests/sample_project/manage.py test tests.sample_project
 

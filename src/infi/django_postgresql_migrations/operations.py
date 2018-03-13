@@ -10,10 +10,14 @@ class CreateCompactIndex(Operation):
     See http://leopard.in.ua/2015/04/13/postgresql-indexes/
     '''
 
-    def __init__(self, model_name, field_name, index_name=None, where=None):
+    def __init__(self, model_name, field_names, index_name=None, where=None):
         self.model_name = model_name
-        self.field_name = field_name
-        self.index_name = index_name or '%s_%s_btree_gin' % (model_name.lower(), field_name)
+        if isinstance(field_names, basestring):
+            self.field_names = [field_names]
+        else:
+            self.field_names = field_names
+        uscore_separated_field_names = '_'.join(["%s" % field_name for field_name in self.field_names])
+        self.index_name = index_name or '%s_%s_btree_gin' % (model_name.lower(), uscore_separated_field_names)
         self.where = where
 
     def state_forwards(self, app_label, state):
@@ -24,8 +28,9 @@ class CreateCompactIndex(Operation):
         if self.allow_migrate_model(schema_editor.connection.alias, model):
             schema_editor.execute('CREATE EXTENSION IF NOT EXISTS btree_gin')
             conds = 'WHERE ' + self.where if self.where else ''
-            schema_editor.execute('CREATE INDEX "%s" ON "%s" USING gin ("%s") %s' %
-                                  (self.index_name, model._meta.db_table, self.field_name, conds))
+            comma_separated_field_names = ', '.join(["%s" % field_name for field_name in self.field_names])
+            schema_editor.execute('CREATE INDEX "%s" ON "%s" USING gin (%s) %s' %
+                                  (self.index_name, model._meta.db_table, comma_separated_field_names, conds))
 
     def database_backwards(self, app_label, schema_editor, from_state, to_state):
         model = to_state.apps.get_model(app_label, self.model_name)
