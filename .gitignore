@@ -57,3 +57,5 @@ buildout.in
 
 src/infi/django_postgresql_migrations/__version__.py
 bootstrap.py
+.vscode/
+.mypy_cache/

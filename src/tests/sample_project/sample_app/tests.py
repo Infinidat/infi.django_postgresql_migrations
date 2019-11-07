@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.core import management
 
-from models import SampleModel
+from .models import SampleModel
 
 
 class MigrationTest(TestCase):

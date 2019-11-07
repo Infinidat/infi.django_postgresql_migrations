@@ -12,7 +12,7 @@ class CreateCompactIndex(Operation):
 
     def __init__(self, model_name, field_names, index_name=None, where=None):
         self.model_name = model_name
-        if isinstance(field_names, basestring):
+        if isinstance(field_names, str):
             self.field_names = [field_names]
         else:
             self.field_names = field_names
