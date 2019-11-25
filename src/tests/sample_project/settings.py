@@ -31,11 +31,26 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'django.contrib.contenttypes',
+    'django.contrib.messages',
+    'django.contrib.admin',
+    'django.contrib.auth',
     'tests.sample_project.sample_app',
 )
 
-MIDDLEWARE_CLASSES = (
-)
+MIDDLEWARE = ('django.contrib.auth.middleware.AuthenticationMiddleware',
+              'django.contrib.messages.middleware.MessageMiddleware',
+              'django.contrib.sessions.middleware.SessionMiddleware')
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': ['django.contrib.auth.context_processors.auth', 'django.contrib.messages.context_processors.messages'],
+        }
+    },
+]
 
 ROOT_URLCONF = 'tests.sample_project.urls'
 
