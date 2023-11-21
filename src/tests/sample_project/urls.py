@@ -13,8 +13,16 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.conf.urls import include
 from django.contrib import admin
+
+try:
+    # For django < 4
+    from django.conf.urls import url
+except ImportError:
+    # For django >= 4
+    from django.urls import re_path as url
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
